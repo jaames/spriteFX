@@ -318,7 +318,7 @@ fx.alphamap();
 If you need more functionality, you can extend spriteFX at runtime by using `spriteFX.extend` to add a custom function:
 
 ```javascript
-spriteFX.extend(function () {
+spriteFX.extend("function_name", function () {
 
   // do stuff here
 
