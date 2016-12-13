@@ -20,7 +20,7 @@
 
 * [Using the Result](#using-the-result)
 
-* [Image Operations](#image-opperations)
+* [Image Operations](#image-operations)
 
     * [translate](#translate)
 
@@ -43,6 +43,8 @@
     * [fillBG](#fillBG)
 
     * [alphamap](#alphamap)
+
+* [Extending](#extending)
 
 ## Getting started
 
@@ -309,4 +311,18 @@ Creates an [alpha map](https://en.wikipedia.org/wiki/Alpha_mapping) -- a graysca
 var fx = new spriteFX(img);
 
 fx.alphamap();
+```
+
+## Extending
+
+If you need more functionality, you can extend spriteFX at runtime by using `spriteFX.extend` to add a custom function:
+
+```javascript
+spriteFX.extend(function () {
+
+  // do stuff here
+
+  // all spriteFX extensions MUST return this._done() when finished in order to be chainable
+  return this._done();
+});
 ```
