@@ -24,7 +24,9 @@
 
     * [translate](#translate)
 
-    * [resize](#resize)
+    * [scale](#scale)
+
+    * [crop](#crop)
 
     * [lighten](#lighten)
 
@@ -164,22 +166,42 @@ var fx = new spriteFX(img);
 fx.translate(10, -6)
 ```
 
-### resize
+### scale
 
 **Use:**
 
-Resize the current image content.
+Rescale the current image content.
 
 **Example:**
 
 ```javascript
 var fx = new spriteFX(img);
 
-// resize the image to be 16 x 16 pixels
-fx.resize({width: 16, height: 16});
+// rescale the image to be 16 x 16 pixels
+fx.scale({ width: 16, height: 16 });
 
 // or you can specify either width or height only, and the aspect ratio will be maintained!
-fx.resize({width: 12});
+fx.scale({ width: 12 });
+```
+
+### crop
+
+**Use:**
+
+Crop the image, while maintaining the scale. Arguments are in the order of `x1, y1, x1, y2`.
+
+**Example:**
+
+```javascript
+var fx = new spriteFX(img);
+// crop 12 pixels from the left and bottom sides of the image
+fx.crop(0, 0, -12, -12);
+// add 12 pixels to the left and bottom sides of the image
+fx.crop(0, 0, 12, 12);
+// crop 12 pixels from all sides of the image
+fx.crop(12, 12, -12, -12);
+// add 12 pixels to all sides of the image
+fx.crop(-12, -12, 12, 12);
 ```
 
 ### lighten

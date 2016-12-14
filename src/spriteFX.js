@@ -34,12 +34,17 @@
     ctx.globalCompositeOperation = optype;
   };
 
-  proto._saveImage = function () {
+  proto._copyImage = function () {
     this.tempCtx.drawImage(this.canvas, 0, 0);
   };
 
-  proto._restoreImage = function () {
+  proto._pasteImage = function () {
     this.ctx.drawImage(this.tempCanvas, 0, 0);
+  };
+
+  proto._setSize = function (width, height) {
+    this.width  = this.canvas.width  = this.tempCanvas.width  = width;
+    this.height = this.canvas.height = this.tempCanvas.height = height;
   };
 
   proto._done = function () {
@@ -50,28 +55,41 @@
 
   proto.newImage = function (image) {
     this.image = image;
-    this.width  = this.canvas.width  = this.tempCanvas.width  = image.naturalWidth;
-    this.height = this.canvas.height = this.tempCanvas.height = image.naturalHeight;
+    this._setSize(image.naturalWidth, image.naturalHeight);
     this.ctx.drawImage(image, 0, 0);
   };
 
-  proto.resize = function (opts) {
+  proto.scale = function (opts) {
     var newWidth  = opts.width  || this.width  * (opts.height / this.height);
     var newHeight = opts.height || this.height * (opts.width  / this.width);
-    this._saveImage();
+    this._copyImage();
     this._clear();
     this.canvas.width = newWidth;
     this.canvas.height = newHeight;
     this.ctx.drawImage(this.tempCanvas, 0, 0, this.tempCanvas.width, this.tempCanvas.height, 0, 0, newWidth, newHeight);
-    this.width  = this.tempCanvas.width  = newWidth;
-    this.height = this.tempCanvas.height = newHeight;
+    this._setSize(newWidth, newHeight);
     return this._done();
   };
 
+  // for backwards compat
+  proto.resize = proto.scale;
+
   proto.translate = function (x, y) {
-    this._saveImage();
+    this._copyImage();
     this._clear();
     this.ctx.drawImage(this.tempCanvas, x, y);
+    return this._done();
+  };
+
+  proto.crop = function (x1, y1, x2, y2) {
+    var newWidth  = this.width - x1 + x2;
+    var newHeight = this.height - y1 + y2;
+    this._copyImage();
+    this._clear();
+    this.canvas.width = newWidth;
+    this.canvas.height = newHeight;
+    this.ctx.drawImage(this.tempCanvas, -x1, -y1);
+    this._setSize(newWidth, newHeight);
     return this._done();
   };
 
@@ -88,10 +106,10 @@
   };
 
   proto.applyMask = function (color, operation) {
-    this._saveImage();
+    this._copyImage();
     this.fillFG(color);
     this._setOp(this.ctx, operation);
-    this._restoreImage();
+    this._pasteImage();
     return this._done();
   };
 
@@ -125,13 +143,12 @@
 
   proto.dropShadow = function (color, xOffset, yOffset) {
     var ctx = this.ctx;
-    this._saveImage();
+    this._copyImage();
     this._clear();
     ctx.drawImage(this.tempCanvas, xOffset, yOffset);
     this.fillFG(color);
     this._setOp(ctx, "source-over");
-    this._restoreImage();
-    // finish
+    this._pasteImage();
     return this._done();
   };
 
