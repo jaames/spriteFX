@@ -74,6 +74,14 @@
   // for backwards compat
   proto.resize = proto.scale;
 
+  proto.getImageObject = function (callback, mimetype) {
+    var img = new Image();
+    img.onload = function () {
+      callback(img);
+    };
+    img.src = this.canvas.toDataURL(mimetype ? mimetype : "image/png");
+  };
+
   proto.translate = function (x, y) {
     this._copyImage();
     this._clear();

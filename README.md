@@ -38,13 +38,15 @@
 
     * [screen](#screen)
 
-    * [dropShadow](#dropShadow)
+    * [dropShadow](#dropshadow)
 
     * [fillFG](#fillFG)
 
     * [fillBG](#fillBG)
 
     * [alphamap](#alphamap)
+
+    * [getImageObject](#getimageobject)
 
 * [Extending](#extending)
 
@@ -333,6 +335,30 @@ Creates an [alpha map](https://en.wikipedia.org/wiki/Alpha_mapping) -- a graysca
 var fx = new spriteFX(img);
 
 fx.alphamap();
+```
+
+### getImageObject
+
+**Use:**
+
+Creates an [Image object](https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement/Image) from the spriteFX result. Since this can take some time, a callback function must be passed into the first parameter, this function will be called once the image has loaded.
+
+There is an optional second parameter for the image MIME type, this defaults to `"image/png"`, however you could also use `"image/jpeg"` or `"image/webp"` where supported.
+
+**Example:**
+
+```javascript
+var fx = new spriteFX(img);
+
+fx.getImageObject(function (image) {
+  // do something with the 'image' object
+});
+
+// get the image as a JPEG
+fx.getImageObject(function (image) {
+  // do something with the 'image' object - which is in JPEG format
+}, "image/jpeg");
+
 ```
 
 ## Extending
