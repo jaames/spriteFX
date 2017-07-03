@@ -1,4 +1,5 @@
 *.html
 test_img
-*.codekit
-*.codekit3
+node_modules
+*.log
+*.cache
