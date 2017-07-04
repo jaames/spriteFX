@@ -1,12 +1,12 @@
 # Features
 
-* GPU Acceleration - spriteFX uses [composite operations](//developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/globalCompositeOperation), which are hardware accelerated -- making it *much* faster than manual pixel manipulation techniques!
+* Fast - spriteFX uses [composite operations](//developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/globalCompositeOperation), which are hardware accelerated -- making it *super* speedy!
 
-* Lightweight - the minified version of spriteFX weighs in at under 3kb (or under 1kb when gzipped).
+* Lightweight - the minified version of spriteFX weighs in at under 4kb (or ~1kb when gzipped).
 
 * Simple - spriteFX's image operations preserve the image's transparency channel for you.
 
-* Support for AMD and CommonJS module loaders.
+* Support for various module loaders.
 
 # Documentation
 
@@ -363,14 +363,16 @@ fx.getImageObject(function (image) {
 
 ## Extending
 
-If you need more functionality, you can extend spriteFX at runtime by using `spriteFX.extend` to add a custom function:
+If you need more functionality, you can extend spriteFX at runtime by using `spriteFX.extend` to add custom functions:
 
 ```javascript
-spriteFX.extend("function_name", function () {
+spriteFX.extend({
+  function_name: function () {
 
-  // do stuff here
+    // do stuff here
 
-  // all spriteFX extensions MUST return this._done() when finished in order to be chainable
-  return this._done();
+    // all spriteFX extensions MUST return this.done() when finished in order to be chainable
+    return this.done();
+  }
 });
 ```
